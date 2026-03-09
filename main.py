@@ -18,15 +18,15 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 # --- CONFIGURATION ---
 CATEGORIAS_TICKETS = {
-    "Support": 1480628300605816893,
-    "Partner": 1480631219254333606,
-    "Highlight": 1480631247272411198
+    "Support": 1480645721672912986,
+    "Partner": 1480646025176944752,
+    "Highlight": 1480645883346419787
 }
-ID_CANAL_TRANSCRIPTS = 1480632054365290627
+ID_CANAL_TRANSCRIPTS = 1479931001089163465
 
 # NUEVO: Lista de IDs de roles que pueden ver los tickets
 ROLES_STAFF_IDS = [
-    1479548690468180058,
+    1479548860178108466
     # Puedes añadir más IDs aquí separados por comas
 ]
 
