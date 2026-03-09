@@ -133,7 +133,7 @@ async def ticketpanel(ctx):
     embed = discord.Embed(
         title="Ticket Panel",
         description="Please select a category to open a ticket:",
-        color=discord.Color.white(),
+        color=discord.Color.green(),
         timestamp=datetime.datetime.now()
     )
     embed.set_author(name="jrr's studio",
@@ -165,6 +165,7 @@ async def purge(ctx, amount: int):
 
 
 bot.run(TOKEN)
+
 
 
 
