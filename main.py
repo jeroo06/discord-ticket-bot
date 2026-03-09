@@ -127,7 +127,7 @@ async def on_ready():
 @commands.has_permissions(administrator=True)
 async def ticketpanel(ctx):
     await ctx.message.delete()
-    id_canal = 1480609045281902834
+    id_canal = 1479546657501745363
     canal = bot.get_channel(id_canal) or await bot.fetch_channel(id_canal)
 
     embed = discord.Embed(
@@ -161,6 +161,7 @@ async def rename(ctx, *, new_name: str):
 @commands.has_permissions(manage_messages=True)
 async def purge(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
+
 
 
 bot.run(TOKEN)
