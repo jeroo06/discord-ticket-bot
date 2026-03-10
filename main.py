@@ -15,7 +15,7 @@ intents.message_content = True
 intents.members = True
 intents.guilds = True
 
-bot = commands.Bot(command_prefix='$', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 # --- CONFIGURATION ---
 CATEGORIAS_TICKETS = {
@@ -147,8 +147,8 @@ async def ticketpanel(ctx):
 
 
 @bot.command()
-@commands.has_permissions(administrator=True)
-@commands.has_any_role(1479548860178108466)
+@commands.has_permissions(manage_channels=True)
+@commands.has_role(1479548860178108466)
 async def rename(ctx, *, new_name: str):
 
     embed_rename = discord.Embed(
@@ -168,7 +168,7 @@ async def rename(ctx, *, new_name: str):
 
 
 @bot.command()
-@commands.has_permissions(administrator=True)
+@commands.has_permissions(manage_messages=True)
 async def purge(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
 
@@ -180,41 +180,40 @@ embed_errorchanel = discord.Embed(
 
 
 @bot.command()
-@commands.has_any_role(1479548860178108466)
-@commands.has_permissions(administrator=True)
+@commands.check_any(commands.has_role(1479548860178108466), commands.has_permissions(administrator=True))
 async def add(ctx, new_user: discord.Member):
     await ctx.message.delete()
+
     if ctx.channel.category_id in CATEGORIAS_TICKETS.values():
-        permisos = {
-            new_user: discord.PermissionOverwrite(view_channel=True, send_messages=True, read_message_history=True)
-        }
+        await ctx.channel.set_permissions(new_user,
+                                          view_channel=True,
+                                          send_messages=True,
+                                          read_message_history=True)
+
         embed_useradded = discord.Embed(
             description=f"{new_user.mention} has been added to {ctx.channel.mention}",
             color=discord.Color.green(),
         )
-
         await ctx.send(embed=embed_useradded)
-    else: await ctx.send(embed=embed_errorchanel, delete_after=5)
+    else:
+        await ctx.send(embed=embed_errorchanel, delete_after=5)
 
 
 @bot.command()
-@commands.has_any_role(1479548860178108466)
-@commands.has_permissions(administrator=True)
+@commands.check_any(commands.has_role(1479548860178108466), commands.has_permissions(administrator=True))
 async def remove(ctx, user_deleted: discord.Member):
     await ctx.message.delete()
+
     if ctx.channel.category_id in CATEGORIAS_TICKETS.values():
-        permisos = {
-            user_deleted: discord.PermissionOverwrite(view_channel=False)
-        }
+        await ctx.channel.set_permissions(user_deleted, overwrite=None)
+
         embed_userremoved = discord.Embed(
             description=f"{user_deleted.mention} has been removed from {ctx.channel.mention}",
             color=discord.Color.red(),
         )
         await ctx.send(embed=embed_userremoved)
-    else: await ctx.send(embed=embed_errorchanel, delete_after=5)
+    else:
+        await ctx.send(embed=embed_errorchanel, delete_after=5)
 
 
 bot.run(TOKEN)
-
-
-
