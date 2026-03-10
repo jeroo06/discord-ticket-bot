@@ -148,7 +148,7 @@ async def ticketpanel(ctx):
 
 @bot.command()
 @commands.has_permissions(administrator=True)
-@commands.has_role(1479548860178108466)
+@commands.has_any_role(1479548860178108466)
 async def rename(ctx, *, new_name: str):
 
     embed_rename = discord.Embed(
@@ -180,7 +180,7 @@ embed_errorchanel = discord.Embed(
 
 
 @bot.command()
-@commands.has_role(1479548860178108466)
+@commands.has_any_role(1479548860178108466)
 @commands.has_permissions(administrator=True)
 async def add(ctx, new_user: discord.Member):
     await ctx.message.delete()
@@ -198,7 +198,7 @@ async def add(ctx, new_user: discord.Member):
 
 
 @bot.command()
-@commands.has_role(1479548860178108466)
+@commands.has_any_role(1479548860178108466)
 @commands.has_permissions(administrator=True)
 async def remove(ctx, user_deleted: discord.Member):
     await ctx.message.delete()
@@ -215,5 +215,6 @@ async def remove(ctx, user_deleted: discord.Member):
 
 
 bot.run(TOKEN)
+
 
 
