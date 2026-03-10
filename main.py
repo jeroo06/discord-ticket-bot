@@ -1,6 +1,6 @@
 import os
 import discord
-import interaction
+import discord.interactions
 
 from discord.ext import commands
 import datetime
@@ -110,9 +110,7 @@ class MenuTickets(discord.ui.Select):
             description=f"Hello {usuario.mention}, welcome to your support ticket."
         )
         embed_contenido.set_footer(text="Click the button below to close this ticket")
-        contenido = (
-            {menciones_staff}
-        )
+        contenido = menciones_staff
 
         await nuevo_ticket.send(content=contenido)
         await nuevo_ticket.send(embed=embed_contenido, view=BotonCerrar())
