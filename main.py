@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 import io
 import asyncio
 
-from scripts.regsetup import description
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
