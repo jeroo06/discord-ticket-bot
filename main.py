@@ -1,5 +1,6 @@
 import os
 import discord
+
 from discord.ext import commands
 import datetime
 from dotenv import load_dotenv
@@ -102,14 +103,16 @@ class MenuTickets(discord.ui.Select):
         # Mención de todos los roles de staff en el mensaje de bienvenida
         menciones_staff = " ".join([f"<@&{rid}>" for rid in ROLES_STAFF_IDS])
 
+        embed_contenido = discord.Embed(
+            description=f"Hello {usuario.mention}, welcome to your support ticket."
+        )
+        embed_contenido.set_footer(text="Click the button below to close this ticket")
         contenido = (
-            f"🎫 **New {categoria_nombre} Ticket**\n"
-            f"Hello {usuario.mention}, welcome to your support ticket.\n"
-            f"The staff team {menciones_staff} will assist you shortly.\n\n"
-            f"Click the button below to close this ticket."
+            {menciones_staff}
         )
 
-        await nuevo_ticket.send(content=contenido, view=BotonCerrar())
+        await nuevo_ticket.send(content=contenido)
+        await nuevo_ticket.send(embed=embed_contenido, view=BotonCerrar())
 
 
 class TicketView(discord.ui.View):
@@ -130,27 +133,34 @@ async def ticketpanel(ctx):
     id_canal = 1479546657501745363
     canal = bot.get_channel(id_canal) or await bot.fetch_channel(id_canal)
 
-    embed = discord.Embed(
+    embed_ticketpanel = discord.Embed(
         title="Ticket Panel",
         description="Please select a category to open a ticket:",
         color=discord.Color.light_gray(),
         timestamp=datetime.datetime.now()
     )
-    embed.set_author(name="jrr's studio",
+    embed_ticketpanel.set_author(name="jrr's studio",
                      icon_url="https://media.discordapp.net/attachments/1340021249811939382/1480612688068608132/jrrs_studio.png")
-    embed.set_footer(text="Misuse of tickets may lead to sanctions.")
+    embed_ticketpanel.set_footer(text="Misuse of tickets may lead to sanctions.")
 
-    await canal.send(embed=embed, view=TicketView())
+    await canal.send(embed=embed_ticketpanel, view=TicketView())
 
 
 @bot.command()
 @commands.has_permissions(manage_channels=True)
+@commands.has_role(1479548860178108466)
 async def rename(ctx, *, new_name: str):
+
+    embed_rename = discord.Embed(
+        description=f"Channel renamed to {ctx.channel.mention}",
+        color=discord.Color.blue(),
+    )
     await ctx.message.delete()
     if ctx.channel.category_id not in CATEGORIAS_TICKETS.values():
-        return await ctx.send("❌ This command can only be used inside a ticket channel.", delete_after=5)
+        return await ctx.send(embed_errorchanel, delete_after=5)
 
     formatted_name = new_name.lower().replace(" ", "-")
+    await ctx.send(embed=embed_rename)
     try:
         await ctx.channel.edit(name=formatted_name)
     except Exception:
@@ -161,6 +171,47 @@ async def rename(ctx, *, new_name: str):
 @commands.has_permissions(manage_messages=True)
 async def purge(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
+
+
+
+embed_errorchanel = discord.Embed(
+        description="This channel is not a ticket channel."
+    )
+
+
+@bot.command()
+@commands.has_role(1479548860178108466)
+@commands.has_permissions(administrator=True)
+async def add(ctx, new_user: discord.Member):
+    await ctx.message.delete()
+    if ctx.channel.category_id in CATEGORIAS_TICKETS.values():
+        permisos = {
+            new_user: discord.PermissionOverwrite(view_channel=True, send_messages=True, read_message_history=True)
+        }
+        embed_useradded = discord.Embed(
+            description=f"{new_user.mention} has been added to {ctx.channel.mention}",
+            color=discord.Color.green(),
+        )
+
+        await ctx.send(embed=embed_useradded)
+    else: await ctx.send(embed=embed_errorchanel, delete_after=5)
+
+
+@bot.command()
+@commands.has_role(1479548860178108466)
+@commands.has_permissions(administrator=True)
+async def remove(ctx, user_deleted: discord.Member):
+    await ctx.message.delete()
+    if ctx.channel.category_id in CATEGORIAS_TICKETS.values():
+        permisos = {
+            user_deleted: discord.PermissionOverwrite(view_channel=False)
+        }
+        embed_userremoved = discord.Embed(
+            description=f"{user_deleted.mention} has been removed from {ctx.channel.mention}",
+            color=discord.Color.red(),
+        )
+        await ctx.send(embed=embed_userremoved)
+    else: await ctx.send(embed=embed_errorchanel, delete_after=5)
 
 
 bot.run(TOKEN)
