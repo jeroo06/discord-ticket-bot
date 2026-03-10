@@ -15,7 +15,7 @@ intents.message_content = True
 intents.members = True
 intents.guilds = True
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents)
 
 # --- CONFIGURATION ---
 CATEGORIAS_TICKETS = {
@@ -215,3 +215,4 @@ async def remove(ctx, user_deleted: discord.Member):
 
 
 bot.run(TOKEN)
+
