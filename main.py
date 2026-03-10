@@ -15,7 +15,7 @@ intents.message_content = True
 intents.members = True
 intents.guilds = True
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents)
 
 # --- CONFIGURATION ---
 CATEGORIAS_TICKETS = {
@@ -147,7 +147,7 @@ async def ticketpanel(ctx):
 
 
 @bot.command()
-@commands.has_permissions(manage_channels=True)
+@commands.has_permissions(administrator=True)
 @commands.has_role(1479548860178108466)
 async def rename(ctx, *, new_name: str):
 
@@ -180,7 +180,8 @@ embed_errorchanel = discord.Embed(
 
 
 @bot.command()
-@commands.check_any(commands.has_role(1479548860178108466), commands.has_permissions(administrator=True))
+@commands.has_permissions(administrator=True)
+@commands.has_role(1479548860178108466)
 async def add(ctx, new_user: discord.Member):
     await ctx.message.delete()
 
@@ -200,7 +201,8 @@ async def add(ctx, new_user: discord.Member):
 
 
 @bot.command()
-@commands.check_any(commands.has_role(1479548860178108466), commands.has_permissions(administrator=True))
+@commands.has_permissions(administrator=True)
+@commands.has_role(1479548860178108466)
 async def remove(ctx, user_deleted: discord.Member):
     await ctx.message.delete()
 
