@@ -151,7 +151,7 @@ async def ticketpanel(ctx):
 async def rename(ctx, *, new_name: str):
 
     embed_rename = discord.Embed(
-        description=f"Channel renamed to {ctx.channel.mention}",
+        description=f"Channel renamed to {ctx.new_name.mention}",
         color=discord.Color.blue(),
     )
     await ctx.message.delete()
