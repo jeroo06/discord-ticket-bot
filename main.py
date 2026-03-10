@@ -147,8 +147,7 @@ async def ticketpanel(ctx):
 
 
 @bot.command()
-@commands.has_permissions(administrator=True)
-@commands.has_role(1479548860178108466)
+@commands.check_any(commands.has_role(1479548860178108466), commands.has_permissions(administrator=True))
 async def rename(ctx, *, new_name: str):
 
     embed_rename = discord.Embed(
