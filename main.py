@@ -327,4 +327,40 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+
+@bot.command()
+@commands.check_any(commands.has_role(1479548690468180058), commands.has_permissions(administrator=True))
+async def pagos(ctx):
+    await ctx.message.delete()
+    if ctx.channel.category_id in CATEGORIAS_TICKETS.values():
+        embed_pagos = discord.Embed(
+            title="Metodos de pago",
+            description="• Método: **PayPal**"
+                        "\n• Link: https://paypal.me/jaimeejrr"
+                        "\n\n**¿Cómo pagar?**"
+                        "\n\n1. Enviar como **Amigos y familiares**"
+                        "\n2. **Sin ninguna nota o mensaje**"
+                        "\n\nImportante"
+                        "\n·**No se hacen devoluciones bajo ningún concepto**"
+                        "\n·**Para pagar con Bizum, hablarlo primero en ticket**",
+            color=discord.Color.purple(),
+        )
+        embed_pagos.set_image(
+            url="https://media.discordapp.net/attachments/1481760944177807410/1481761608186200075/banner_jrrs_studio_1.png?ex=69b47d89&is=69b32c09&hm=ecfbc351d6a4033cbca57ae2cbfe894be46c95e42911c3e69d4967decd12aa24&=&format=webp&quality=lossless&width=1382&height=454"
+        )
+        embed_pagos.set_author(
+            name="jrr's studio",
+            icon_url="https://media.discordapp.net/attachments/1340021249811939382/1480612688068608132/jrrs_studio.png"
+        )
+        embed_pagos.set_thumbnail(
+            url="https://media.discordapp.net/attachments/1340021249811939382/1481760773666767061/jrrs_studio.png?ex=69b47cc2&is=69b32b42&hm=c61f6e3f94bd551a7e641c10896495fa15e716ccd5b8eaaf02d08f645ab7364c&=&format=webp&quality=lossless&width=1012&height=902"
+        )
+        embed_pagos.set_footer(
+            text="Todos los derechos reservados. Reservado a cambios futuros si lo es necesario."
+        )
+        await ctx.send(embed=embed_pagos)
+    else:
+        await ctx.send(embed=embed_errorchanel, delete_after=5)
+
+
 bot.run(TOKEN)
